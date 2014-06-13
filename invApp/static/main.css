@@ -1,0 +1,11 @@
+body {
+  font-family: Verdana, Helvetica, sans-serif;
+  background-color: #F0FFFF;
+}
+.test{
+box-shadow: 10px 10px 5px #FE642E;
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
