@@ -56,6 +56,20 @@ app.factory('mainSvc', function($q, $http) {
       };
 });
 
+app.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
+
 app.directive('loading', function () {
   return {
     restrict: 'E',
@@ -83,7 +97,17 @@ app.controller('mainCtrl', ['$scope', '$http', '_', 'mainSvc', '$sce', function(
   }
 
   $scope.clickSearch = function() {
-    if (!existy($scope.mainForm.searchText) || $scope.mainForm.searchText == "") return;
+    $scope.requiredMsg = '';
+    if (!existy($scope.mainForm.minPrice) || $scope.mainForm.minPrice.trim() == "") $scope.requiredMsg = 'min price is required';
+    if (!existy($scope.mainForm.maxPrice) || $scope.mainForm.maxPrice.trim() == "") $scope.requiredMsg = 'max price is required';
+    if (!existy($scope.mainForm.searchText) || $scope.mainForm.searchText.trim() == "") $scope.requiredMsg = 'search text is required';
+
+    if($scope.requiredMsg != '') return;
+
+    $scope.mainForm.minPrice = $scope.mainForm.minPrice.trim();
+    $scope.mainForm.maxPrice = $scope.mainForm.maxPrice.trim();
+    $scope.mainForm.searchText = $scope.mainForm.searchText.trim();
+
     $scope.loading = true;
 
     $scope.mainForm.CraigsURL = 'http://'+$scope.mainForm.city+'.craigslist.org/search/sss?query='+$scope.mainForm.searchText;

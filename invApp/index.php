@@ -11,22 +11,26 @@
     <script src="./static/script.js"></script>
   </head>
 
-  <body ng-app="mainApp" ng-controller="mainCtrl">
-    <h2>Annie Cake's Prototype</h2>
-    <div ng-init="mainForm.freeShipping=true">
+  <body ng-app="mainApp" ng-controller="mainCtrl" style="background-color: #F0FFFF;">
+    <h4>Annie Cake's Prototype</h4>
+    <form name="thisForm">
+    <div ng-init="mainForm.freeShipping=true;mainForm.minPrice=' ';mainForm.maxPrice=' ';mainForm.searchText=' '">
         <label style="margin-left:10px">
-            <label>Craigslist City:<input type="text" style="width:100px; margin-left: 10px" ng-model="mainForm.city" placeholder="Portland"></label>
+            <label>Craigslist City:<input type="text" style="width:100px; margin-left: 10px" ng-model="mainForm.city" placeholder="Portland" ng-enter="clickSearch()"></label>
             <input id="chkfreeship" type="checkbox" ng-model="mainForm.freeShipping" style="margin-left:20px;"><label for="chkfreeship" style="margin-right:30px">Free Shipping</label>
-            Price $ <input type="text" style="width:50px;" ng-model="mainForm.minPrice"> to $
-            <input type="text" style="width:50px" ng-model="mainForm.maxPrice">            
+            Price $ <input type="text" style="width:50px;" name="minPrice" ng-model="mainForm.minPrice" ng-enter="clickSearch()" autofocus>
+            to $
+            <input type="text" style="width:50px" name="maxPrice" ng-model="mainForm.maxPrice" ng-enter="clickSearch()">
         </label>
         
-        <span style="margin-left:10px"><input type="text" ng-model="mainForm.searchText" placeholder="Searching...">
+        <span style="margin-left:10px"><input type="text" name="searchText" ng-model="mainForm.searchText" placeholder="Searching..." ng-enter="clickSearch()">
+        <span style="color:red">{{requiredMsg}}</span>
         <button ng-click="clickSearch()" class="btn btn-primary">Search</button></span>
     </div>
+    </form>
     <hr>
 
-    <tabset>
+    <tabset style="font-size: 18px; border:14px; font-family: Verdana, Helvetica, sans-serif;">
         <tab heading="Result on Ebay">
             <div ng-show="message" style="color:red;margin-left: 10px">{{message}}</div>
             <loading></loading>
