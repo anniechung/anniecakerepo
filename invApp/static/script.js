@@ -110,10 +110,12 @@ app.controller('mainCtrl', ['$scope', '$http', '_', 'mainSvc', '$sce', function(
 
     $scope.loading = true;
 
-    $scope.mainForm.CraigsURL = 'http://'+$scope.mainForm.city+'.craigslist.org/search/sss?query='+$scope.mainForm.searchText;
+    $scope.mainForm.CraigsURL = 'http://'+$scope.mainForm.city+'.craigslist.org/search/sss?query='+$scope.mainForm.searchText+
+        '&maxAsk='+$scope.mainForm.maxPrice+'&minAsk='+$scope.mainForm.minPrice;
 
-    var url = 'api_json.php?target=ebay&searchClause='+$scope.mainForm.searchText+'|'+
-            $scope.mainForm.minPrice+'|'+$scope.mainForm.maxPrice+'|'+$scope.mainForm.freeShipping;
+    var url = 'api_search_thirdparty.php?target=ebay&searchClause='+$scope.mainForm.searchText+'|'+
+            $scope.mainForm.minPrice+'|'+$scope.mainForm.maxPrice+'|'+$scope.mainForm.freeShipping+
+            '|'+$scope.mainForm.soldOnly;
 
     mainSvc.searchEbay(url).then(function(result){
 

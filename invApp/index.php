@@ -14,7 +14,7 @@
   <body ng-app="mainApp" ng-controller="mainCtrl" style="background-color: #F0FFFF;">
     <h4>Annie Cake's Prototype</h4>
     <form name="thisForm">
-    <div ng-init="mainForm.freeShipping=true;mainForm.minPrice=' ';mainForm.maxPrice=' ';mainForm.searchText=' '">
+    <div ng-init="mainForm.freeShipping=true;mainForm.minPrice=' ';mainForm.maxPrice=' ';mainForm.searchText=' ';mainForm.soldOnly=false">
         <label style="margin-left:10px">
             <label>Craigslist City:<input type="text" style="width:100px; margin-left: 10px" ng-model="mainForm.city" placeholder="Portland" ng-enter="clickSearch()"></label>
             <input id="chkfreeship" type="checkbox" ng-model="mainForm.freeShipping" style="margin-left:20px;"><label for="chkfreeship" style="margin-right:30px">Free Shipping</label>
@@ -25,7 +25,9 @@
         
         <span style="margin-left:10px"><input type="text" name="searchText" ng-model="mainForm.searchText" placeholder="Searching..." ng-enter="clickSearch()">
         <span style="color:red">{{requiredMsg}}</span>
-        <button ng-click="clickSearch()" class="btn btn-primary">Search</button></span>
+        <button ng-click="clickSearch()" class="btn btn-primary">Search</button>
+        <input id="chksoldonly" type="checkbox" ng-model="mainForm.soldOnly" style="margin-left:20px;"><label for="chksoldonly" style="margin-left:10px">Sold Only on eBay</label>
+        </span>
     </div>
     </form>
     <hr>

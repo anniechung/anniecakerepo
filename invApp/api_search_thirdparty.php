@@ -4,6 +4,7 @@ error_reporting(E_ALL);  // Turn on all errors, warnings and notices for easier 
 $default_max_price = "900000000";
 $default_min_price = "0";
 $default_free_shipping = "true";
+$default_sold_only = "false";
 
 if (isset($_GET["target"]) && isset($_GET["searchClause"]))
 {
@@ -14,6 +15,7 @@ if (isset($_GET["target"]) && isset($_GET["searchClause"]))
   $min_price = count($clauseAry) > 1 ? ($clauseAry[1] != ""? $clauseAry[1]:$default_min_price) : $default_min_price;
   $max_price = count($clauseAry) > 2 ? ($clauseAry[2] != ""? $clauseAry[2]:$default_max_price) : $default_max_price;
   $free_shipping = count($clauseAry) > 3 ? $clauseAry[3] : $default_free_shipping;
+  $sold_only = count($clauseAry) > 4 ? $clauseAry[4] : $default_sold_only;
   switch ($_GET["target"])
     {
       case "ebay":
@@ -32,6 +34,8 @@ $globalid = 'EBAY-US';  // Global ID of the eBay site you want to search (e.g., 
 //$query = 'michio kaku';  // You may want to supply your own query
 $safequery = urlencode($query);  // Make the query URL-friendly
 $i = '0';  // Initialize the item filter index to 0
+$op_name = ($sold_only == 'true')?"findCompletedItems":"findItemsByKeywords";
+$sold_only_clause = ($sold_only == 'true')?"&SoldItemsOnly=true":"";
 
 // Create a PHP array of the item filters you want to use in your request
 $filterarray =
@@ -87,13 +91,15 @@ buildURLArray($filterarray);
 
 // Construct the findItemsByKeywords HTTP GET call
 $apicall = "$endpoint?";
-$apicall .= "OPERATION-NAME=findItemsByKeywords";
+$apicall .= "OPERATION-NAME=$op_name";
 $apicall .= "&SERVICE-VERSION=$version";
 $apicall .= "&SECURITY-APPNAME=$appid";
 $apicall .= "&GLOBAL-ID=$globalid";
 $apicall .= "&keywords=$safequery";
 $apicall .= "&paginationInput.entriesPerPage=30";
 $apicall .= "&sortOrder=PricePlusShippingLowest";
+$apicall .= $sold_only_clause;
+//$apicall .= "&SoldItemsOnly=true";  //can only be used with findCompletedItems
 //$apicall .= "&responseencoding=JSON&callback=''";  //return in json format
 $apicall .= "$urlfilter";
 
